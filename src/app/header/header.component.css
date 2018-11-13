@@ -1,0 +1,15 @@
+.header {
+    background-color: rgb(234, 242, 250);
+    margin: -10px -10px 0px -10px;
+}
+.title {
+    font-family: 'accurat-bold';
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(34, 27, 56);
+}
+.wipro-logo {
+    height: 47.2px;
+    width: 60px;
+    margin: 5px;
+}

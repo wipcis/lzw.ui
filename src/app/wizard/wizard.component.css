@@ -1,0 +1,39 @@
+.wizard {
+    margin: 0px -10px 0px -10px;
+}
+
+.banner-text {
+    font-size: 28px;
+    height: 200px;
+    vertical-align: middle;
+    display: table-cell;
+    padding-left: 50px;
+}
+.section-container {
+    display: flex;
+}
+.csp-input {
+    width: 500px;
+    font-size: 20px;
+}
+
+.datacenter {
+    background-color: rgb(252, 252, 244);
+}
+.datacenter:hover {
+    cursor: help;
+}
+.cloud-image {
+    min-width: 350px;
+    min-height: 200px;
+    background-image: url("../../assets/images/cloud.png");
+    background-size: 100%;
+}
+.design-inputs-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.mat-form-field {
+    width: 40%;
+}

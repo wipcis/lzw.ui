@@ -1,1 +1,48 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+@font-face {
+    font-family: 'Akkurat';
+    /*src: url(https://www.wipro.com/fonts.WiproAkkuratTT-Regular.ttf);*/
+    src: url('https://www.wipro.com/fonts.WiproAkkuratWeb-Regular.eot'); /* IE9 Compat Modes */
+      src: url('https://www.wipro.com/WiproAkkuratWeb-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+           url('https://www.wipro.com/fonts.WiproAkkuratWeb-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+           url('https://www.wipro.com/fonts.WiproAkkuratWeb-Regular.woff') format('woff'), /* Pretty Modern Browsers */
+           url('https://www.wipro.com/fonts.WiproAkkuratTT-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+@font-face {
+font-family: 'akkurat-bold';
+/*src: url(https://www.wipro.com/fonts.WiproAkkuratTT-Bold.ttf);*/
+src: url('https://www.wipro.com/fonts.WiproAkkuratWeb-Bold.eot'); /* IE9 Compat Modes */
+    src: url('https://www.wipro.com/fonts.WiproAkkuratWeb-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('https://www.wipro.com/fonts.WiproAkkuratWeb-Bold.woff2') format('woff2'), /* Super Modern Browsers */
+        url('https://www.wipro.com/fonts.WiproAkkuratWeb-Bold.woff') format('woff'), /* Pretty Modern Browsers */
+        url('https://www.wipro.com/fonts.WiproAkkuratTT-Bold.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+@font-face {
+font-family: 'akkurat-italic';
+/*src: url(https://www.wipro.com/fonts.WiproAkkuratTT-Italic.ttf);*/
+src: url('https://www.wipro.com/fonts.WiproAkkuratWeb-Italic.eot'); /* IE9 Compat Modes */
+    src: url('https://www.wipro.com/fonts.WiproAkkuratWeb-Italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('https://www.wipro.com/fonts.WiproAkkuratWeb-Italic.woff2') format('woff2'), /* Super Modern Browsers */
+        url('https://www.wipro.com/fonts.WiproAkkuratWeb-Italic.woff') format('woff'), /* Pretty Modern Browsers */
+        url('https://www.wipro.com/fonts.WiproAkkuratTT-Italic.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+@font-face {
+font-family: 'akkurat-light';
+/*src: url(https://www.wipro.com/fonts.WiproAkkuratTT-Light.ttf);*/
+src: url('https://www.wipro.com/fonts.WiproAkkuratWeb-Light.eot'); /* IE9 Compat Modes */
+    src: url('https://www.wipro.com/fonts.WiproAkkuratWeb-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('https://www.wipro.com/fonts.WiproAkkuratWeb-Light.woff2') format('woff2'), /* Super Modern Browsers */
+        url('https://www.wipro.com/fonts.WWiproAkkuratWeb-Light.woff') format('woff'), /* Pretty Modern Browsers */
+        url('https://www.wipro.com/fonts.WiproAkkuratTT-Light.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
+@font-face {
+font-family: 'Akkurat-Mono';
+/*src: url(https://www.wipro.com/fonts.WiproAkkuratMonoTT-Regular.ttf);*/
+src: url('https://www.wipro.com/fonts.WiproAkkuratMonoWeb-Regular.eot'); /* IE9 Compat Modes */
+    src: url('https://www.wipro.com/fonts.WiproAkkuratMonoWeb-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('https://www.wipro.com/fonts.WiproAkkuratMonoWeb-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+        url('https://www.wipro.com/fonts.WiproAkkuratMonoWeb-Regular.woff') format('woff'), /* Pretty Modern Browsers */
+        url('https://www.wipro.com/fonts.WiproAkkuratMonoTT-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
+}
