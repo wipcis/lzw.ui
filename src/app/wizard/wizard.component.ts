@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-wizard',
   templateUrl: './wizard.component.html',
-  styleUrls: ['./wizard.component.css']
+  styleUrls: ['./wizard.component.css'],
 })
 export class WizardComponent implements OnInit {
-  introFormGroup: FormGroup;
-  designInputsFormGroup: FormGroup;
+
+  constructor(private _formBuilder: FormBuilder) {
+  }
+
   vpcConfigurationFormGroup: FormGroup;
   reviewFormGroup: FormGroup;
-  csp = "aws";
-  dataSource = [];
-  
+  changedValue;
+
   csps = [
     {
       name: "Amazon Web Services",
@@ -28,16 +29,53 @@ export class WizardComponent implements OnInit {
       value: "gcp"
     }
   ]
-  constructor(private _formBuilder: FormBuilder) {
+
+  accountList = [
+    {
+      accountName: "orgroot",
+      roleName: "",
+      email: "",
+      billing: true,
+      type: "root",
+      tags: ""
+    },
+    {
+      accountName: "logging",
+      roleName: "",
+      email: "",
+      billing: false,
+      type: "service",
+      tags: ""
+    },
+    {
+      accountName: "security",
+      roleName: "",
+      email: "",
+      billing: false,
+      type: "service",
+      tags: ""
+    },
+    {
+      accountName: "sharedservices",
+      roleName: "",
+      email: "",
+      billing: false,
+      type: "service",
+      tags: ""
+    }
+  ]
+  outJson = {
+    csp: "aws",
+    org: "",
+    orgPrefix: "",
+    accounts: this.accountList,
+  }
+
+  displayedColumns = {
+    accounts: ["accountName", "roleName", "email", "billing", "type", "tags", "actionsColumn"]
   }
 
   ngOnInit() {
-    this.introFormGroup = this._formBuilder.group({
-      introCtrl: ['', Validators.required]
-    });
-    this.designInputsFormGroup = this._formBuilder.group({
-      designInputsCtrl: ['', Validators.required]
-    });
     this.vpcConfigurationFormGroup = this._formBuilder.group({
       vpcConfigurationCtrl: ['', Validators.required]
     });
@@ -46,4 +84,22 @@ export class WizardComponent implements OnInit {
     });
   }
 
+  removeAccount(i) {
+    alert(JSON.stringify(this.accountList[i]));
+  }
+
+  onchange(i: number, event: any) {
+    alert("Index " + i + " Event: " + JSON.stringify(event));
+  }
+
+  addAccount() {
+    this.accountList.push({    
+      accountName: "",
+      roleName: "",
+      email: "",
+      billing: true,
+      type: "",
+      tags: ""
+    });
+  }
 }

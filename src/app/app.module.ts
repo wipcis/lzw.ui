@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { WizardComponent } from './wizard/wizard.component';
 
-import {MatButtonModule} from '@angular/material';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {
@@ -18,7 +17,9 @@ import {
     MatSliderModule,
     MatCardModule,
     MatTooltipModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule
   } from '@angular/material';
 
 @NgModule({
@@ -42,7 +43,8 @@ import {
     MatSliderModule,
     MatCardModule,
     MatTooltipModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
