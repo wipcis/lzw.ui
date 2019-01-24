@@ -36,7 +36,7 @@ export class WizardComponent implements OnInit {
       roleName: "",
       email: "",
       billing: true,
-      type: "root",
+      accountType: "root",
       tags: ""
     },
     {
@@ -44,7 +44,7 @@ export class WizardComponent implements OnInit {
       roleName: "",
       email: "",
       billing: false,
-      type: "service",
+      accountType: "service",
       tags: ""
     },
     {
@@ -52,7 +52,7 @@ export class WizardComponent implements OnInit {
       roleName: "",
       email: "",
       billing: false,
-      type: "service",
+      accountType: "service",
       tags: ""
     },
     {
@@ -60,9 +60,22 @@ export class WizardComponent implements OnInit {
       roleName: "",
       email: "",
       billing: false,
-      type: "service",
+      accountType: "service",
+      tags: ""
+    },
+    {
+      accountName: "",
+      roleName: "",
+      email: "",
+      billing: false,
+      accountType: "service",
       tags: ""
     }
+  ]
+  accountTypeOptions = [
+    {value: "root", viewValue: "Root Account"},
+    {value: "service", viewValue: "Service Account"},
+    {value: "user", viewValue: "IAM User Account"}
   ]
   outJson = {
     csp: "aws",
@@ -85,8 +98,8 @@ export class WizardComponent implements OnInit {
   }
 
   removeAccount(i) {
-    alert(JSON.stringify(this.accountList[i]));
-  }
+    this.accountList.splice(i, 1);
+   }
 
   onchange(i: number, event: any) {
     alert("Index " + i + " Event: " + JSON.stringify(event));
@@ -98,8 +111,11 @@ export class WizardComponent implements OnInit {
       roleName: "",
       email: "",
       billing: true,
-      type: "",
+      accountType: "",
       tags: ""
     });
+  }
+  compareItems(i1, i2) {
+    return i1 && i2 && i1.id===i2.id;
   }
 }

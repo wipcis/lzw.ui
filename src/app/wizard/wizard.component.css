@@ -64,3 +64,18 @@
 .mat-column-btn {
     width: 2%;
 }
+
+.cell {
+    float: left;
+}
+
+mat-form-field.cell {
+    width: 150px;
+}
+mat-form-field.cell.email {
+    width: 300px;
+}
+
+.section-title {
+    font-weight: bold;
+}
