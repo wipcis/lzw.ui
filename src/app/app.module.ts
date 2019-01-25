@@ -19,7 +19,9 @@ import {
     MatTooltipModule,
     MatTableModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDividerModule,
+    MatTabsModule
   } from '@angular/material';
 
 @NgModule({
@@ -44,7 +46,9 @@ import {
     MatCardModule,
     MatTooltipModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule,
+    MatTabsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -69,9 +69,10 @@
               <mat-icon>add</mat-icon>
           </button>
 
-          <mat-card *ngFor="let item of vpcList; index as i;" class="table-row">
+          <mat-label class="section-title">VPCs</mat-label>          
+          <mat-card *ngFor="let item of vpcList; index as i; trackBy: trackElement" class="table-row">
               <mat-form-field class="cell">
-                <input matInput [name]="item.name" [(value)]="item.name" placeholder="Name" required>
+                <input matInput [name]="item.name" [(ngModel)]="item.name" [(value)]="item.name" placeholder="Name" [ngModelOptions]="{standalone: true}" required>
               </mat-form-field>
               <mat-form-field class="cell">
                 <input matInput name="item.cidrBlock" [(value)]="item.cidrBlock" placeholder="CIDR Block">
@@ -85,23 +86,72 @@
               <mat-form-field class="cell">
                 <input matInput name="item.region" [(value)]="item.region" placeholder="Region">
               </mat-form-field>
-
               <mat-form-field class="cell">
-                <mat-select placeholder="Account Type" [(value)]="item.accountType">
-                    <mat-option *ngFor="let acc of accountTypeOptions" [value]="acc.value">{{acc.viewValue}}</mat-option>
+                <mat-select placeholder="Instance Tenancy" [(value)]="item.instanceTenancy">
+                    <mat-option *ngFor="let inst of instanceTenancyOptions" [value]="inst.value">{{inst.viewValue}}</mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field class="cell">
                 <input matInput name="item.tags" [(value)]="item.tags" placeholder="Tags">
               </mat-form-field>
-              <button (click)="removeAccount(i)" color="primary" mat-icon-button>
+              <button (click)="removeVpc(i)" color="primary" mat-icon-button>
                 <mat-icon>close</mat-icon>
               </button>
             </mat-card>
-              <button (click)="addAccount()" color="primary" mat-icon-button>
+              <button (click)="addVpc()" color="primary" mat-icon-button>
                   <mat-icon>add</mat-icon>
               </button>
 
+              <mat-label class="section-title">VPC Peers</mat-label>          
+              <mat-card *ngFor="let item of vpcPeersList; index as i;" class="table-row">
+                  <mat-form-field class="cell">
+                    <input matInput [name]="item.name" [(value)]="item.name" placeholder="Name" required>
+                  </mat-form-field>
+                  <mat-form-field class="cell">
+                    <mat-select placeholder="VPC" [(value)]="item.vpcId" required>
+                        <mat-option *ngFor="let vpc of vpcList; trackBy: trackElement" [value]="vpc.name">{{vpc.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="cell">
+                      <mat-select placeholder="Peer VPC" [(value)]="item.peerVpcId" required>
+                          <mat-option *ngFor="let vpc of vpcList; trackBy: trackElement" [value]="vpc.name">{{vpc.name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+  
+                    <mat-form-field class="cell">
+                    <input matInput name="item.tags" [(value)]="item.tags" placeholder="Tags">
+                  </mat-form-field>
+                  <button (click)="removeVpcPeer(i)" color="primary" mat-icon-button>
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-card>
+                  <button (click)="addVpcPeer()" color="primary" mat-icon-button>
+                      <mat-icon>add</mat-icon>
+                  </button>
+
+                  <mat-label class="section-title">S3 Buckets</mat-label>          
+                  <mat-card *ngFor="let item of s3list; index as i;" class="table-row">
+                      <mat-form-field class="cell">
+                        <input matInput [name]="item.bucketName" [(value)]="item.bucketName" placeholder="Name" required>
+                      </mat-form-field>
+                      <mat-form-field class="cell">
+                          <mat-select placeholder="Bucket Encryption" [(value)]="item.bucketEncryption">
+                              <mat-option [value]="true">true</mat-option>
+                              <mat-option [value]="false">false</mat-option>
+                          </mat-select>
+                      </mat-form-field>                      
+      
+                        <mat-form-field class="cell">
+                        <input matInput name="item.tags" [(value)]="item.tags" placeholder="Tags">
+                      </mat-form-field>
+                      <button (click)="removeS3Bucket(i)" color="primary" mat-icon-button>
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-card>
+                      <button (click)="addS3Bucket()" color="primary" mat-icon-button>
+                          <mat-icon>add</mat-icon>
+                      </button>
+    
             
           <div class="action-buttons">
           <button mat-button matStepperPrevious>Back</button>
@@ -113,9 +163,29 @@
   <mat-step [stepControl]="vpcConfigurationFormGroup">
     <form [formGroup]="vpcConfigurationFormGroup">
       <ng-template matStepLabel>Configure Services</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="Address" formControlName="vpcConfigurationCtrl" required>
-      </mat-form-field>
+      <mat-tab-group>
+          <mat-tab *ngFor="let item of vpcList; index as i;" [label]="item.name"> 
+          
+          <mat-label class="tab-title">{{item.name}}</mat-label><br>
+          
+              <mat-label class="section-title">Subnets</mat-label><br>          
+              <mat-card *ngFor="let sn of subnets[item.name]; index as j;" class="table-row">
+                  <mat-form-field class="cell">
+                    <input matInput [name]="sn.cidrBlock" [(value)]="item.cidrBlock" placeholder="CIDR Block" required>
+                  </mat-form-field>
+                    <mat-form-field class="cell">
+                    <input matInput name="sn.tags" [(value)]="sn.tags" placeholder="Tags">
+                  </mat-form-field>
+                  <button (click)="removeSubnet(item.name,j)" color="primary" mat-icon-button>
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-card>
+                  <button (click)="addSubnet(item.name)" color="primary" mat-icon-button>
+                      <mat-icon>add</mat-icon>
+                  </button>
+
+          </mat-tab>
+        </mat-tab-group>
       <div class="action-buttons">
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
