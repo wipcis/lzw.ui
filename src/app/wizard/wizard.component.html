@@ -166,12 +166,12 @@
       <mat-tab-group>
           <mat-tab *ngFor="let item of vpcList; index as i;" [label]="item.name"> 
           
-          <mat-label class="tab-title">{{item.name}}</mat-label><br>
+          <div class="tab-title"><mat-label >{{item.name}}</mat-label></div>
           
               <mat-label class="section-title">Subnets</mat-label><br>          
               <mat-card *ngFor="let sn of subnets[item.name]; index as j;" class="table-row">
                   <mat-form-field class="cell">
-                    <input matInput [name]="sn.cidrBlock" [(value)]="item.cidrBlock" placeholder="CIDR Block" required>
+                    <input matInput [name]="sn.cidrBlock" [(value)]="sn.cidrBlock" placeholder="CIDR Block" required>
                   </mat-form-field>
                     <mat-form-field class="cell">
                     <input matInput name="sn.tags" [(value)]="sn.tags" placeholder="Tags">
@@ -183,7 +183,14 @@
                   <button (click)="addSubnet(item.name)" color="primary" mat-icon-button>
                       <mat-icon>add</mat-icon>
                   </button>
-
+                  <br>
+                  <mat-label class="section-title">Services</mat-label><br>          
+   
+                    <mat-form-field *ngFor="let svc of services[item.name] | keyvalue" class="cell">
+                        <mat-select [placeholder]="svc.key" [(value)]="svc.value">
+                            <mat-option *ngFor="let s of ['enabled','disabled']" [value]="s">{{s}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>                      
           </mat-tab>
         </mat-tab-group>
       <div class="action-buttons">

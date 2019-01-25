@@ -440,6 +440,16 @@ export class WizardComponent implements OnInit {
       tags: ""
     });
   }
+  removeSubnet(vpc,j){
+    this.subnets[vpc].splice(j,1);
+  }
+  addSubnet(vpc) {
+    this.subnets[vpc].push({
+      cidrBlock: "x.x.x.x/x",
+      tags: ""      
+    })
+  }
+
   compareItems(i1, i2) {
     return i1 && i2 && i1.id===i2.id;
   }
