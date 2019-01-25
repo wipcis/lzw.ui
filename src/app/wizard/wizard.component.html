@@ -28,7 +28,7 @@
   <mat-step [stepControl]="designInputsFormGroup">
     <form>
       <ng-template matStepLabel>Design Inputs</ng-template>
-      <mat-card class="design-inputs-container">
+      <mat-card class="form-container">
         <mat-form-field>
           <input matInput placeholder="Organization" name="org" [(ngModel)]="outJson.org" required>
         </mat-form-field>
@@ -37,9 +37,9 @@
         </mat-form-field>
         <mat-label class="section-title">Accounts</mat-label>
 
-        <mat-card *ngFor="let item of accountList; index as i;" class="table-row">
+        <mat-card *ngFor="let item of accountList; index as i;trackBy: trackElement" class="table-row">
           <mat-form-field class="cell">
-            <input matInput [name]="item.accountName" [(value)]="item.accountName" placeholder="Account Name" required>
+            <input matInput [name]="item.accountName" [(ngModel)]="item.accountName" [(value)]="item.accountName" placeholder="Account Name" [ngModelOptions]="{standalone: true}" required>
           </mat-form-field>
           <mat-form-field class="cell">
             <input matInput name="item.roleName" [(value)]="item.roleName" placeholder="Role Name">
@@ -151,8 +151,7 @@
                       <button (click)="addS3Bucket()" color="primary" mat-icon-button>
                           <mat-icon>add</mat-icon>
                       </button>
-    
-            
+         
           <div class="action-buttons">
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -161,14 +160,13 @@
     </form>
   </mat-step>
   <mat-step [stepControl]="vpcConfigurationFormGroup">
-    <form [formGroup]="vpcConfigurationFormGroup">
-      <ng-template matStepLabel>Configure Services</ng-template>
-      <mat-tab-group>
-          <mat-tab *ngFor="let item of vpcList; index as i;" [label]="item.name"> 
-          
-          <div class="tab-title"><mat-label >{{item.name}}</mat-label></div>
-          
-              <mat-label class="section-title">Subnets</mat-label><br>          
+      <form>
+    <ng-template matStepLabel>Configure Services</ng-template>
+      <mat-tab-group [selectedIndex]="selectedTab">
+          <mat-tab  *ngFor="let item of vpcList; index as i;" [label]="item.name">
+            <mat-card class="form-container">
+              <mat-label class="tab-title">{{item.name}}</mat-label>
+              <mat-label class="section-title">Subnets</mat-label>          
               <mat-card *ngFor="let sn of subnets[item.name]; index as j;" class="table-row">
                   <mat-form-field class="cell">
                     <input matInput [name]="sn.cidrBlock" [(value)]="sn.cidrBlock" placeholder="CIDR Block" required>
@@ -183,28 +181,65 @@
                   <button (click)="addSubnet(item.name)" color="primary" mat-icon-button>
                       <mat-icon>add</mat-icon>
                   </button>
-                  <br>
-                  <mat-label class="section-title">Services</mat-label><br>          
-   
-                    <mat-form-field *ngFor="let svc of services[item.name] | keyvalue" class="cell">
-                        <mat-select [placeholder]="svc.key" [(value)]="svc.value">
-                            <mat-option *ngFor="let s of ['enabled','disabled']" [value]="s">{{s}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>                      
-          </mat-tab>
-        </mat-tab-group>
-      <div class="action-buttons">
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
+                  <mat-label class="section-title">Security Groups</mat-label>        
+            <mat-card *ngFor="let sg of securityGroups[item.name]; index as j;" class="table-row">
+                <mat-form-field class="cell">
+                  <input matInput [name]="sg.name" [(value)]="sg.name" placeholder="Name" required>
+                </mat-form-field>
+                <mat-form-field class="cell">
+                  <input matInput [name]="sg.description" [(value)]="sg.description" placeholder="Description" required>
+                </mat-form-field>
+                <mat-form-field class="cell network-rules">
+                  <textarea matInput [name]="sg.ingress" [(value)]="sg.ingress" placeholder="Ingress Rules" required></textarea>
+                </mat-form-field>
+                <mat-form-field class="cell network-rules">
+                  <textarea matInput [name]="sg.egress" [(value)]="sg.egress" placeholder="Egress Rules" required></textarea>
+                </mat-form-field>
+
+                <mat-form-field class="cell">
+                  <input matInput name="sg.tags" [(value)]="sg.tags" placeholder="Tags">
+                </mat-form-field>
+                <button (click)="removeSecurityGroup(item.name,j)" color="primary" mat-icon-button>
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-card>
+                <button (click)="addSecurityGroup(item.name)" color="primary" mat-icon-button>
+                    <mat-icon>add</mat-icon>
+                </button>
+
+                <mat-label class="section-title">Services</mat-label>         
+
+                <mat-form-field *ngFor="let svc of services[item.name] | keyvalue" class="cell">
+                    <mat-select [placeholder]="svc.key" [(value)]="svc.value">
+                        <mat-option *ngFor="let s of ['enabled','disabled']" [value]="s">{{s}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card>
+            <button mat-button (click)="prevTab()">Previous VPC</button>
+            <button mat-button (click)="nextTab()">Next VPC</button>
+           </mat-tab>
+       </mat-tab-group>
+       <div class="action-buttons">
+          <button mat-button matStepperPrevious>Configure Design Inputs</button>
+          <button mat-button matStepperNext (click)="constructAndReview()">Review Configuration</button>
+        </div>
+  
+      </form> 
   </mat-step>
   <mat-step [stepControl]="reviewFormGroup">
       <form [formGroup]="reviewFormGroup">
-        <ng-template matStepLabel>Review Design</ng-template>
-        <mat-form-field>
-          <input matInput placeholder="Address" formControlName="reviewCtrl" required>
-        </mat-form-field>
+        <ng-template matStepLabel>
+          <p (click)="constructAndReview()">Review Design</p>
+        </ng-template>
+        <mat-card class="form-container">
+            <mat-label class="section-title">Landing Zone Components and Services</mat-label>
+            <button mat-button (click)="constructAndReview()">
+                <mat-icon>refresh</mat-icon>
+            </button>          
+            <mat-card><pre>{{outJsonStr}}</pre></mat-card>
+            
+        </mat-card>
+
         <div class="action-buttons">
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -213,10 +248,18 @@
     </mat-step>
   <mat-step>
     <ng-template matStepLabel>Authenticate & Create</ng-template>
-    Provide your credentials to provision
+    <mat-card class="form-container">
+    <mat-form-field>
+      <input matInput placeholder="AWS Access Key" [(ngModel)]="outJson.aws_access_key_id" required>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="AWS Secret Key" [(ngModel)]="outJson.aws_secret_access_key" required>
+      </mat-form-field>
+    </mat-card>
     <div class="action-buttons">
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="stepper.reset()">Reset</button>
+      <button mat-button (click)="submitRequest()">Create Landing Zone</button>
     </div>
   </mat-step>
 </mat-horizontal-stepper>

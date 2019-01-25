@@ -30,7 +30,7 @@
     background-image: url("../../assets/images/cloud.png");
     background-size: 100%;
 }
-.design-inputs-container {
+.form-container {
     display: flex;
     flex-direction: column;
 }
@@ -75,7 +75,9 @@ mat-form-field.cell {
 mat-form-field.cell.email {
     width: 300px;
 }
-
+mat-form-field.cell.network-rules {
+    width: 350px;
+}
 .section-title {
     font-weight: bold;
 }
@@ -84,4 +86,5 @@ mat-form-field.cell.email {
     text-transform: uppercase;
     font-size: 16px;
     padding-bottom: 10px;
+    padding-top: 10px;
 }

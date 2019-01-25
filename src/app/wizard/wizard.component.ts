@@ -43,6 +43,7 @@ export class WizardComponent implements OnInit {
 
   accountList = [
     {
+      id: 1,
       accountName: "orgroot",
       roleName: "",
       email: "",
@@ -51,6 +52,7 @@ export class WizardComponent implements OnInit {
       tags: ""
     },
     {
+      id: 2,
       accountName: "logging",
       roleName: "",
       email: "",
@@ -59,6 +61,7 @@ export class WizardComponent implements OnInit {
       tags: ""
     },
     {
+      id: 3,
       accountName: "security",
       roleName: "",
       email: "",
@@ -67,6 +70,7 @@ export class WizardComponent implements OnInit {
       tags: ""
     },
     {
+      id: 4,
       accountName: "sharedservices",
       roleName: "",
       email: "",
@@ -75,6 +79,7 @@ export class WizardComponent implements OnInit {
       tags: ""
     },
     {
+      id: 5,
       accountName: "",
       roleName: "",
       email: "",
@@ -364,9 +369,11 @@ export class WizardComponent implements OnInit {
     csp: "aws",
     org: "",
     orgPrefix: "",
-    accounts: this.accountList,
   }
 
+  outJsonStr = JSON.stringify(this.outJson, null, 4);
+
+  selectedTab = 0;
   displayedColumns = {
     accounts: ["accountName", "roleName", "email", "billing", "type", "tags", "actionsColumn"]
   }
@@ -390,6 +397,7 @@ export class WizardComponent implements OnInit {
 
   addAccount() {
     this.accountList.push({    
+      id: this.accountList.length + 1,
       accountName: "",
       roleName: "",
       email: "",
@@ -449,11 +457,49 @@ export class WizardComponent implements OnInit {
       tags: ""      
     })
   }
-
+  removeSecurityGroup(vpc,j){
+    this.securityGroups[vpc].splice(j,1);
+  }
+  addSecurityGroup(vpc) {
+    this.securityGroups[vpc].push({
+      name: "", 
+      description: "",
+      egress: "",
+      ingress: "",
+      tags: ""     
+    })
+  }
   compareItems(i1, i2) {
     return i1 && i2 && i1.id===i2.id;
   }
   trackElement(index: number, element: any) {
     return element ? element.id : null;
+  }
+
+  submitRequest() {
+    console.log("Landing Zone create request submitted");
+  }
+
+  nextTab() {
+    this.selectedTab += 1;
+    if (this.selectedTab > this.vpcList.length) this.selectedTab = this.vpcList.length;
+  }
+  prevTab() {
+    this.selectedTab -= 1;
+    if (this.selectedTab < 0) this.selectedTab = 0;
+  }
+  constructAndReview() {
+    var acc = []
+    for(var obj of this.accountList) {
+      if (/\S/.test(obj.accountName)) { 
+        var str = obj.accountName + ":" + obj.roleName + ":" + obj.email + ":" + obj.billing + ":"
+          obj.accountType + ":" + obj.tags;
+        acc.push(str);
+      }
+    }
+    this.outJson["accounts"] = acc;
+
+    this.outJsonStr = JSON.stringify(this.outJson,null,4);
+    console.log("Config complete for review");
   }
 }
