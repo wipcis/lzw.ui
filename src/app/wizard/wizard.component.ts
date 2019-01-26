@@ -452,8 +452,11 @@ export class WizardComponent implements OnInit {
     this.subnets[vpc].splice(j,1);
   }
   addSubnet(vpc) {
+    if(! this.subnets.hasOwnProperty(vpc)){
+      this.subnets[vpc] = [];
+    }
     this.subnets[vpc].push({
-      cidrBlock: "x.x.x.x/x",
+      cidrBlock: "",
       tags: ""      
     })
   }
@@ -498,6 +501,58 @@ export class WizardComponent implements OnInit {
       }
     }
     this.outJson["accounts"] = acc;
+    var vpc = []
+    for(var objVpc of this.vpcList) {
+      if (/\S/.test(objVpc.name)) { 
+        var str = objVpc.name + ":" + 
+          objVpc.cidrBlock + ":" +
+          objVpc.enableDnsSupport + ":" + 
+          objVpc.region + ":" + 
+          objVpc.instanceTenancy + ":" + 
+          objVpc.tags;
+        vpc.push(str);
+      }
+    }
+    this.outJson["vpcs"] = vpc;
+
+    var peers = []
+    for(var objPeer of this.vpcPeersList) {
+      if (/\S/.test(objPeer.name)) { 
+        var str = objPeer.name + ":" +
+          objPeer.vpcId + ":" +
+          objPeer.peerVpcId + ":" +
+          objPeer.tags;
+        peers.push(str);
+      }
+    }
+    this.outJson["vpcpeers"] = peers;
+
+    var s3 = []
+    for(var objs3 of this.s3list) {
+      if (/\S/.test(objs3.bucketName)) { 
+        var str = objs3.bucketName + ":" +
+          objs3.accessControl + ":" +
+          objs3.bucketEncryption + ":" +
+          objs3.corsConfig + ":" +
+          objs3.tags;
+        s3.push(str);
+      }
+    }
+    this.outJson["s3buckets"] = s3;
+
+    var snets = []
+    for(var objVpc of this.vpcList) {
+      var index = this.vpcList.indexOf(objVpc);
+      for(var objSn of this.subnets[objVpc.name]) {
+        if (/\S/.test(objSn.cidrBlock)) { 
+          var str =  index + ":" + objVpc.name + ":" +
+            objSn.cidrBlock + ":" +
+            objSn.tags;
+          snets.push(str);
+        }
+      }
+    }
+    this.outJson["subnets"] = snets;
 
     this.outJsonStr = JSON.stringify(this.outJson,null,4);
     console.log("Config complete for review");

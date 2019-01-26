@@ -75,7 +75,7 @@
                 <input matInput [name]="item.name" [(ngModel)]="item.name" [(value)]="item.name" placeholder="Name" [ngModelOptions]="{standalone: true}" required>
               </mat-form-field>
               <mat-form-field class="cell">
-                <input matInput name="item.cidrBlock" [(value)]="item.cidrBlock" placeholder="CIDR Block">
+                <input matInput name="item.cidrBlock" [(value)]="item.cidrBlock" [(ngModel)]="item.cidrBlock" [ngModelOptions]="{standalone: true}"  placeholder="CIDR Block">
               </mat-form-field>
               <mat-form-field class="cell">
                   <mat-select placeholder="DNS Support" [(value)]="item.enableDnsSupport">
@@ -84,7 +84,7 @@
                   </mat-select>
               </mat-form-field>
               <mat-form-field class="cell">
-                <input matInput name="item.region" [(value)]="item.region" placeholder="Region">
+                <input matInput name="item.region" [(value)]="item.region" [(ngModel)]="item.region" [ngModelOptions]="{standalone: true}"  placeholder="Region">
               </mat-form-field>
               <mat-form-field class="cell">
                 <mat-select placeholder="Instance Tenancy" [(value)]="item.instanceTenancy">
@@ -132,7 +132,7 @@
                   <mat-label class="section-title">S3 Buckets</mat-label>          
                   <mat-card *ngFor="let item of s3list; index as i;" class="table-row">
                       <mat-form-field class="cell">
-                        <input matInput [name]="item.bucketName" [(value)]="item.bucketName" placeholder="Name" required>
+                        <input matInput [name]="item.bucketName" [(value)]="item.bucketName" [(ngModel)]="item.bucketName" [ngModelOptions]="{standalone: true}" placeholder="Name" required>
                       </mat-form-field>
                       <mat-form-field class="cell">
                           <mat-select placeholder="Bucket Encryption" [(value)]="item.bucketEncryption">
@@ -142,7 +142,7 @@
                       </mat-form-field>                      
       
                         <mat-form-field class="cell">
-                        <input matInput name="item.tags" [(value)]="item.tags" placeholder="Tags">
+                        <input matInput name="item.tags" [(value)]="item.tags" [(ngModel)]="item.tags" [ngModelOptions]="{standalone: true}" placeholder="Tags">
                       </mat-form-field>
                       <button (click)="removeS3Bucket(i)" color="primary" mat-icon-button>
                         <mat-icon>close</mat-icon>
@@ -169,10 +169,10 @@
               <mat-label class="section-title">Subnets</mat-label>          
               <mat-card *ngFor="let sn of subnets[item.name]; index as j;" class="table-row">
                   <mat-form-field class="cell">
-                    <input matInput [name]="sn.cidrBlock" [(value)]="sn.cidrBlock" placeholder="CIDR Block" required>
+                    <input matInput [name]="sn.cidrBlock" [(value)]="sn.cidrBlock" [(ngModel)]="sn.cidrBlock" [ngModelOptions]="{standalone: true}" placeholder="CIDR Block" required>
                   </mat-form-field>
                     <mat-form-field class="cell">
-                    <input matInput name="sn.tags" [(value)]="sn.tags" placeholder="Tags">
+                    <input matInput name="sn.tags" [(value)]="sn.tags" [(ngModel)]="sn.tags" [ngModelOptions]="{standalone: true}" placeholder="Tags">
                   </mat-form-field>
                   <button (click)="removeSubnet(item.name,j)" color="primary" mat-icon-button>
                     <mat-icon>close</mat-icon>
