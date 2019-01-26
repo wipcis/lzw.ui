@@ -1,6 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { map, catchError, tap } from 'rxjs/operators';
+
 interface vpc {
   id: number,
   name: string,
@@ -11,6 +14,14 @@ interface vpc {
   tags: string
 }
 
+const endpoint = 'https://beta.cloudservices.wipro.com/lzw/';
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json'
+  })
+};
+
+
 @Component({
   selector: 'app-wizard',
   templateUrl: './wizard.component.html',
@@ -19,7 +30,7 @@ interface vpc {
 
 export class WizardComponent implements OnInit {
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(private _formBuilder: FormBuilder, private http: HttpClient) {
   }
 
   vpcConfigurationFormGroup: FormGroup;
@@ -480,7 +491,18 @@ export class WizardComponent implements OnInit {
   }
 
   submitRequest() {
-    console.log("Landing Zone create request submitted");
+    this.http.post(endpoint, this.outJson, httpOptions)
+      .subscribe(
+        (val) => {
+          console.log("Created Landing Zone. You will receive an email");
+        },
+        response => {
+          console.log("Request Submission error: ", response);
+        },
+        () => {
+          console.log("POST completed");
+        }
+      )
   }
 
   nextTab() {
@@ -541,6 +563,8 @@ export class WizardComponent implements OnInit {
     this.outJson["s3buckets"] = s3;
 
     var snets = []
+    var sgs = []
+    var svcs = []
     for(var objVpc of this.vpcList) {
       var index = this.vpcList.indexOf(objVpc);
       for(var objSn of this.subnets[objVpc.name]) {
@@ -551,10 +575,36 @@ export class WizardComponent implements OnInit {
           snets.push(str);
         }
       }
+      for(var objSg of this.securityGroups[objVpc.name]) {
+        if (/\S/.test(objSg.name)) { 
+          var str =  index + ":" + objVpc.name + ":" +
+            objSg.name + ":" + 
+            objSg.description + ":" +
+            objSg.egress + "-" +
+            objSg.ingress + ":" +
+            objSg.tags;   
+          sgs.push(str);
+        }
+      }
+      var svc = this.services[objVpc.name];
+      Object.keys(svc).forEach(function(k){
+        var str =  index + ":" + objVpc.name + ":" + k + ":" + svc[k]
+        svcs.push(str);          
+      })
     }
     this.outJson["subnets"] = snets;
+    this.outJson["securityGroups"] = sgs;
+    this.outJson["services"] = svcs;
 
-    this.outJsonStr = JSON.stringify(this.outJson,null,4);
+    this.outJsonStr = JSON.stringify(this.outJson,this.hideCspCreds,4);
+//    this.outJsonStr = JSON.stringify(this.outJson,null,4);
     console.log("Config complete for review");
+  }
+  hideCspCreds(key, value) {
+    // Filtering out properties
+    if (key === 'aws_access_key_id' || key === 'aws_secret_access_key') {
+      return '************';
+    }
+    return value;
   }
 }

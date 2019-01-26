@@ -250,17 +250,17 @@
     <ng-template matStepLabel>Authenticate & Create</ng-template>
     <mat-card class="form-container">
     <mat-form-field>
-      <input matInput placeholder="AWS Access Key" [(ngModel)]="outJson.aws_access_key_id" required>
+      <input matInput placeholder="AWS Access Key" [(value)]="outJson.aws_access_key_id" [(ngModel)]="outJson.aws_access_key_id" required>
       <mat-icon matTooltip="1. Login to your AWS account. 2) Go to IAM. 3) Click Rotate your access keys.
         4) Click Manage User Access Keys. 5) Click Security Credentials. 6) Click Create Access Key. 
         (Note: The secret access key will be shown only at creation time, save the CSV in a secure place 
         if you need to access later) " matTooltipClass="aws-instruction">help</mat-icon>
     </mat-form-field>
     <mat-form-field>
-        <input matInput placeholder="AWS Secret Key" [(ngModel)]="outJson.aws_secret_access_key" required>
+        <input matInput placeholder="AWS Secret Key" [(value)]="outJson.aws_secret_access_key"  [(ngModel)]="outJson.aws_secret_access_key" required>
       </mat-form-field>
       <mat-form-field>
-          <input matInput placeholder="Email" [(ngModel)]="outJson.userEmail" required>
+          <input matInput placeholder="Email" [(value)]="outJson.userEmail" [(ngModel)]="outJson.userEmail" required>
         </mat-form-field>
     </mat-card>
     <div class="action-buttons">
