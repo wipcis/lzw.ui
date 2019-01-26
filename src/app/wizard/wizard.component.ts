@@ -492,7 +492,7 @@ export class WizardComponent implements OnInit {
     var acc = []
     for(var obj of this.accountList) {
       if (/\S/.test(obj.accountName)) { 
-        var str = obj.accountName + ":" + obj.roleName + ":" + obj.email + ":" + obj.billing + ":"
+        var str = obj.accountName + ":" + obj.roleName + ":" + obj.email + ":" + obj.billing + ":" +
           obj.accountType + ":" + obj.tags;
         acc.push(str);
       }

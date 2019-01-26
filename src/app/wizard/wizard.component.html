@@ -54,7 +54,7 @@
               </mat-select>
           </mat-form-field>
           <mat-form-field class="cell">
-              <mat-select placeholder="Account Type" [(value)]="item.accountType">
+              <mat-select placeholder="Account Type"  [(value)]="item.accountType">
                   <mat-option *ngFor="let acc of accountTypeOptions" [value]="acc.value">{{acc.viewValue}}</mat-option>
               </mat-select>
           </mat-form-field>
@@ -251,10 +251,17 @@
     <mat-card class="form-container">
     <mat-form-field>
       <input matInput placeholder="AWS Access Key" [(ngModel)]="outJson.aws_access_key_id" required>
+      <mat-icon matTooltip="1. Login to your AWS account. 2) Go to IAM. 3) Click Rotate your access keys.
+        4) Click Manage User Access Keys. 5) Click Security Credentials. 6) Click Create Access Key. 
+        (Note: The secret access key will be shown only at creation time, save the CSV in a secure place 
+        if you need to access later) " matTooltipClass="aws-instruction">help</mat-icon>
     </mat-form-field>
     <mat-form-field>
         <input matInput placeholder="AWS Secret Key" [(ngModel)]="outJson.aws_secret_access_key" required>
       </mat-form-field>
+      <mat-form-field>
+          <input matInput placeholder="Email" [(ngModel)]="outJson.userEmail" required>
+        </mat-form-field>
     </mat-card>
     <div class="action-buttons">
       <button mat-button matStepperPrevious>Back</button>

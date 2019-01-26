@@ -46,3 +46,8 @@ src: url('https://www.wipro.com/fonts.WiproAkkuratMonoWeb-Regular.eot'); /* IE9 
         url('https://www.wipro.com/fonts.WiproAkkuratMonoWeb-Regular.woff') format('woff'), /* Pretty Modern Browsers */
         url('https://www.wipro.com/fonts.WiproAkkuratMonoTT-Regular.ttf')  format('truetype'); /* Safari, Android, iOS */
 }
+
+
+.mat-form-field-infix {
+    display: inline-flex !important;
+}
