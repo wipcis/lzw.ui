@@ -171,7 +171,17 @@
                   <mat-form-field class="cell">
                     <input matInput [name]="sn.cidrBlock" [(value)]="sn.cidrBlock" [(ngModel)]="sn.cidrBlock" [ngModelOptions]="{standalone: true}" placeholder="CIDR Block" required>
                   </mat-form-field>
-                    <mat-form-field class="cell">
+                  <mat-form-field class="cell">
+                    <mat-select placeholder="Type" [(value)]="sn.type">
+                        <mat-option *ngFor="let s of ['private','public']" [value]="s">{{s}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="cell">
+                  <mat-select placeholder="Route to NAT Gateway" [(value)]="sn.routeToNatGw">
+                      <mat-option *ngFor="let s of ['yes','no']" [value]="s">{{s}}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+                  <mat-form-field class="cell">
                     <input matInput name="sn.tags" [(value)]="sn.tags" [(ngModel)]="sn.tags" [ngModelOptions]="{standalone: true}" placeholder="Tags">
                   </mat-form-field>
                   <button (click)="removeSubnet(item.name,j)" color="primary" mat-icon-button>
@@ -268,5 +278,8 @@
       <button mat-button (click)="stepper.reset()">Reset</button>
       <button mat-button (click)="submitRequest()">Create Landing Zone</button>
     </div>
+    <mat-card class="response">
+      {{response}}
+    </mat-card>
   </mat-step>
 </mat-horizontal-stepper>

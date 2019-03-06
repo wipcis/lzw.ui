@@ -36,6 +36,7 @@ export class WizardComponent implements OnInit {
   vpcConfigurationFormGroup: FormGroup;
   reviewFormGroup: FormGroup;
   changedValue;
+  response;
 
   csps = [
     {
@@ -167,22 +168,22 @@ export class WizardComponent implements OnInit {
   ]
   subnets = {
     sharedservices: [
-      {cidrBlock: "10.1.1.0/24", tags: ""}
+      {cidrBlock: "10.1.1.0/24", type: "private", routeToNatGw: "yes", tags: ""}
     ],
     sandbox: [
-      {cidrBlock: "10.2.1.0/24", tags: ""}
+      {cidrBlock: "10.2.1.0/24", type: "private", routeToNatGw: "yes", tags: ""}
     ],
     preprod: [
-      {cidrBlock: "10.3.1.0/24", tags: ""}
+      {cidrBlock: "10.3.1.0/24", type: "private", routeToNatGw: "yes", tags: ""}
     ],
     prod: [
-      {cidrBlock: "10.4.1.0/24", tags: ""}
+      {cidrBlock: "10.4.1.0/24", type: "private", routeToNatGw: "yes", tags: ""}
     ],
     dmz: [
-      {cidrBlock: "10.5.1.0/24", tags: ""}
+      {cidrBlock: "10.5.1.0/24", type: "private", routeToNatGw: "yes", tags: ""}
     ],
     dr: [
-      {cidrBlock: "10.6.1.0/24", tags: ""}
+      {cidrBlock: "10.6.1.0/24", type: "private", routeToNatGw: "yes", tags: ""}
     ]
   }
   securityGroups = {
@@ -378,8 +379,10 @@ export class WizardComponent implements OnInit {
 
   outJson = {
     csp: "aws",
-    org: "",
-    orgPrefix: "",
+    appkey: "qs1DmveTfswjdft",
+    organization: "",
+    organizationPrefix: "",
+    terraform_command: "plan",
   }
 
   outJsonStr = JSON.stringify(this.outJson, null, 4);
@@ -495,9 +498,11 @@ export class WizardComponent implements OnInit {
       .subscribe(
         (val) => {
           console.log("Created Landing Zone. You will receive an email");
+          this.response = "Create Landing Zone successfully. Check after 30 mins";
         },
         response => {
           console.log("Request Submission error: ", response);
+          this.response = "Landing zone creation failed. Check console log for details";
         },
         () => {
           console.log("POST completed");
@@ -569,26 +574,41 @@ export class WizardComponent implements OnInit {
       var index = this.vpcList.indexOf(objVpc);
       for(var objSn of this.subnets[objVpc.name]) {
         if (/\S/.test(objSn.cidrBlock)) { 
-          var str =  index + ":" + objVpc.name + ":" +
+          var rngw, ngw;
+          rngw = (objSn.routeToNatGw == "yes") ? "nat-route-yes" : "nat-route-no";
+          ngw = (objSn.type == "public") ? "nat-gw-yes" : "nat-gw-no";
+          var str =  objVpc.name + ":" +
             objSn.cidrBlock + ":" +
+            objSn.type + ":" +
+            rngw + ":" +
+            ngw + ":" +
             objSn.tags;
           snets.push(str);
         }
       }
       for(var objSg of this.securityGroups[objVpc.name]) {
         if (/\S/.test(objSg.name)) { 
-          var str =  index + ":" + objVpc.name + ":" +
+          var str =  objVpc.name + ":" +
             objSg.name + ":" + 
-            objSg.description + ":" +
-            objSg.egress + "-" +
+//            objSg.description + ":" +
             objSg.ingress + ":" +
+            objSg.tags;   
+          sgs.push(str);
+        }
+      }
+      for(var objSg of this.securityGroups[objVpc.name]) {
+        if (/\S/.test(objSg.name)) { 
+          var str =  objVpc.name + ":" +
+            objSg.name + ":" + 
+//            objSg.description + ":" +
+            objSg.egress + ":" +
             objSg.tags;   
           sgs.push(str);
         }
       }
       var svc = this.services[objVpc.name];
       Object.keys(svc).forEach(function(k){
-        var str =  index + ":" + objVpc.name + ":" + k + ":" + svc[k]
+        var str =  objVpc.name + ":" + k + ":" + svc[k]
         svcs.push(str);          
       })
     }
